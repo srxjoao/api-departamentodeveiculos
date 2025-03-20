@@ -1,7 +1,10 @@
 const app = require("express")();
 
 app.get("/", (req, res)=>{
-    res.send("Olá esta e a primeira atividade de PTAS2")
+    res.send("Está funcionando =)")
 });
 
-app.listen(8001)
+app.listen(1402)
+
+
+// git pull 
