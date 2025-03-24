@@ -1,10 +1,20 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 
-app.get("/", (req, res)=>{
-    res.send("Está funcionando =)")
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+
+app.get("/", (req,res)=>{
+    res.send("Departamento de veículos");
 });
 
-app.listen(1402)
+const veiculoRoutes = require("./routes/veiculoRoutes")
+app.use("/veiculos",veiculoRoutes)
 
-
-// git pull 
+app.listen(8000, (err)=>{
+    if(err){
+        console.log("Erro"+ JSON.stringify(err));
+    }else{
+        console.log("Aplicação rodando em localhost:8000");
+    }
+})
