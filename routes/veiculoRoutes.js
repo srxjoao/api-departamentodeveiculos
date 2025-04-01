@@ -3,7 +3,7 @@ const VeiculoController = require("../controllers/VeiculoController")
 
 router.get("/cadastro", VeiculoController.formCadastro);
 
-router.post("/cadastro", VeiculoController.formCadastro);
+router.post("/cadastro", VeiculoController.cadastro);
 
 router.get("/todos", VeiculoController.buscarTodos)
 
