@@ -14,9 +14,16 @@ datasource db {
 }
 
 model Veiculo{
-  id Int @id @ default(autoincrement())
+  id Int @id @default(autoincrement())
   placa String
   modelo String
   cor String
   ano Int
+}
+
+model Usuario{
+  id Int @id @default(autoincrement())
+  nome String
+  email String @unique
+  senha String
 }

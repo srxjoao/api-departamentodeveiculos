@@ -1,20 +1,35 @@
-const express = require("express");
-const app = express();
+const express = require('express');
 
-app.use(express.urlencoded({extended:true}));
+const app = express()
+
+//Capturar campos enviados para o server pelo POST
+app.use(express.urlencoded({ extends: true }));
 app.use(express.json());
 
-app.get("/", (req,res)=>{
-    res.send("Departamento de veículos");
+const exphbs = require("express-handlebars");
+app.engine("handlebars", exphbs.engine());
+app.set("view engine", "handlebars");
+
+app.get('/', (req, res) => {
+    res.render("home");
+    //res.send("Hello World!");
 });
 
-const veiculoRoutes = require("./routes/veiculoRoutes")
-app.use("/veiculos",veiculoRoutes)
+const veiculoRoutes = require("./routes/veiculoRoutes");
+app.use("/veiculos", veiculoRoutes);
 
-app.listen(8080, (err)=>{
-    if(err){
-        console.log("Erro"+ JSON.stringify(err));
-    }else{
-        console.log(`Aplicação rodando em localhost:8080`);
-    }
-})
+const usuarioRoutes = require("./routes/usuarioRoutes");
+app.use("/usuario", usuarioRoutes);
+
+const usuarioController = require('./controllers/usuarioController');
+
+app.get("/areaLogada", usuarioController.verificaAutenticacao, (req, res, next) => {
+    res.json({
+        msg: 
+        "Você está logado com o ID " + req.usuarioId + " e pode acessar este recurso.",
+    });
+});
+
+app.listen(5000, (err) => {
+    console.log("Aplicação rodando na porta 5000...");
+});

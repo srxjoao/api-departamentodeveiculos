@@ -1,27 +1,48 @@
 const path = require("path");
-const {PrismaClient} = require("@prisma/client")
-const  prisma = new PrismaClient();
 
+const { PrismaClient } = require("@prisma/client");
+const client = new PrismaClient();
 
-    class VeiculoController{
-        static formCadastro(req,res){
-            res.sendFile(path.join(__dirname, "..", "views", "formVeiculo.html"));
-        }
-        
-        static async cadastro(req, res){
-        const veiculo = await prisma.veiculo.create({
-                data:{
-                    placa: req.body.placa,
-                    modelo: req.body.modelo,
-                    ano: parseInt(req.body.ano),
-                    cor: req.body.cor,
-                },
-            })
-            res.send(`O Veículo foi cadastrado sob o ID ${veiculo.id}`);
-        }
+class veiculoController {
 
-    // .body pegar dados que vieram via post e o query e usado para dados que vieram via get        
-        static buscarTodos(req, res){}
+    static async cadastrar(req, res) {
+
+        const { modelo, placa, ano, cor } = req.body;
+
+        const veiculo = await client.veiculo.create({
+            data: {
+                modelo,
+                placa,
+                ano:parseInt(ano),
+                cor
+            }
+        });
+
+        res.json({
+            veiculoId: veiculo.id,
+        });
+
     }
 
-module.exports = VeiculoController;
+    static async buscar(req, res) {
+        const id = req.params.idveiculo
+        let veiculo;
+
+        if(id != null){
+            veiculos = await client.veiculo.findMany({
+                where: {
+                    id: parseInt(id)
+                },
+            });
+        }
+        else{
+            veiculo = await client.veiculo.findMany({});
+        }
+        
+        res.json({
+            veiculo,
+        })
+    }
+}
+
+module.exports = veiculoController
